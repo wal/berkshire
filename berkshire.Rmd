@@ -1,0 +1,49 @@
+---
+title: "Berkshire"
+output: html_document
+---
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+data <- readRDS('data/metrics_daily.rds')
+library(tidyverse)
+source('riingo.R')
+```
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('AAPL')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('TWLO')
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('HUBS')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('ZEN')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('DXCM')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('M')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('OVID')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('GRMN')
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% vti_chart('DBX')
+```
