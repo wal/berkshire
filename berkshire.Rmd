@@ -11,7 +11,7 @@ source('riingo.R')
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, fig.width=6, message=FALSE, warning=FALSE}
 data %>% vti_chart('AAPL')
 ```
 

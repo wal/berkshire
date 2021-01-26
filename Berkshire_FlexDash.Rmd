@@ -1,0 +1,166 @@
+---
+title: "VTI Dashboard"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+    
+```{r global, include=FALSE}
+data <- readRDS('data/metrics_daily.rds')
+library(flexdashboard)
+library(shiny)
+library(tidyverse)
+library(plotly)
+
+source('riingo.R')
+```
+
+Home
+===================================== 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+Choose a ticker
+```{r}
+tickers <- data %>% .$ticker %>% sort() %>% unique
+
+selectInput("ticker", 
+            label = "Ticker :", 
+            choices = tickers, 
+            selected = first(tickers))
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Value Trap Indicator
+
+```{r}
+renderPlotly({
+  data %>% vti_chart(input$ticker)  
+})
+```
+
+
+### Price
+
+```{r}
+renderPlotly({
+  data %>% price_chart(input$ticker)  
+})
+```
+
+### Ratios
+
+```{r}
+renderPlotly({
+  data %>% ratios_chart(input$ticker)  
+})
+```
+
+
+Book Value (x1)
+===================================== 
+
+Column
+-----------------------------------------------------------------------
+
+### Price
+
+```{r}
+renderPlotly({
+  subplot(
+    data %>% price_chart(input$ticker),
+    data %>% single_metric_chart(input$ticker, 'pbRatio'))
+})
+```
+
+
+###  Assets v Liabilities
+
+```{r}
+renderPlotly({
+  data %>% assets_liabilities_chart(input$ticker)  
+})
+```
+
+
+
+Sales (x2)
+===================================== 
+
+Column
+-----------------------------------------------------------------------
+
+### Price
+
+```{r}
+renderPlotly({
+  subplot(
+    data %>% price_chart(input$ticker),
+    data %>% single_metric_chart(input$ticker, 'psRatio'))
+})
+```
+
+
+###  Sales
+
+```{r}
+renderPlotly({
+  data %>% single_metric_chart(input$ticker, 'revenue')  
+})
+```
+
+
+
+Earnings (x3)
+===================================== 
+
+Column
+-----------------------------------------------------------------------
+
+### Price
+
+```{r}
+renderPlotly({
+  subplot(
+    data %>% price_chart(input$ticker),
+    data %>% single_metric_chart(input$ticker, 'peRatio'))
+})
+```
+
+
+###  Earnings
+
+```{r}
+renderPlotly({
+  data %>% single_metric_chart(input$ticker, 'netinc')  
+})
+```
+
+
+Cash (x4)
+===================================== 
+
+Column
+-----------------------------------------------------------------------
+
+### Price
+
+```{r}
+renderPlotly({
+  subplot(
+    data %>% price_chart(input$ticker),
+    data %>% single_metric_chart(input$ticker, 'pcRatio'))
+})
+```
+
+
+###  Cash
+
+```{r}
+renderPlotly({
+  data %>% single_metric_chart(input$ticker, 'cashAndEq')  
+})
+```
+

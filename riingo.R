@@ -42,7 +42,66 @@ vti_chart <- function(data, symbol) {
     geom_line() +
     ggtitle(symbol)
   
+  #library(patchwork)
+  #vti_chart + metrics_chart
   subplot(ggplotly(vti_chart), ggplotly(metrics_chart))
 }
 
+ratios_chart <- function(data, symbol) {
+  ratio_metrics <- data %>%
+    filter(ticker == symbol) %>%
+    select(date, ticker, peRatio, pbRatio, psRatio, pcRatio) %>%
+    pivot_longer(-c(date, ticker), names_to = 'metric') 
+  
+  ratio_chart <- ratio_metrics %>%
+    ggplot(aes(date, value, color = metric)) + 
+    geom_line() +
+    ggtitle(symbol)
+  
+  ggplotly(ratio_chart)
+}
 
+single_metric_chart <- function(data, symbol, metric) {
+  
+  d_ata <- data %>%
+    filter(ticker == symbol) %>%
+    select(date, ticker, !!metric) %>%
+    pivot_longer(-c(date, ticker), names_to = 'metric')
+  
+  chart <- d_ata %>%
+    ggplot(aes(date, value, color = metric)) +
+    geom_line() +
+    ggtitle(symbol)
+  
+  ggplotly(chart)
+}
+
+price_chart <- function(data, symbol) {
+  price_data <- data %>%
+    filter(ticker == symbol) %>%
+    select(date, ticker, close) %>%
+    pivot_longer(close, names_to = 'metric')
+  
+  price_chart <- price_data %>%
+    ggplot(aes(date, value, color = metric)) +
+    geom_line() +
+    ggtitle(symbol)
+  
+  ggplotly(price_chart)
+}
+
+assets_liabilities_chart <- function(data, symbol) {
+  l_data <- data %>%
+    filter(ticker == symbol) %>%
+    select(date, ticker, totalAssets, totalLiabilities) %>%
+    pivot_longer(c(totalAssets, totalLiabilities), names_to = 'metric')
+  
+  chart <- l_data %>%
+    ggplot(aes(date, value, color = metric)) +
+    geom_line() +
+    ggtitle(symbol)
+  
+  ggplotly(chart)
+  
+  chart 
+}
